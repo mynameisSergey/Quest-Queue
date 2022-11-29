@@ -1,6 +1,25 @@
 import java.util.Objects;
 
 public class Task {
+    private String title;
+    private String description;
+    private int id;
+    private String status;
+
+    public Task(String title, String description, String status) {
+        this.title = title;
+        this.description = description;
+        this.setStatus(status);
+    }
+
+    public Task(String title, String description, int id, String status) {
+        this.title = title;
+        this.description = description;
+        this.id = id;
+        this.setStatus(status);
+    }
+
+
     public String getTitle() {
         return title;
     }
@@ -29,32 +48,11 @@ public class Task {
         this.status = status;
     }
 
-    private String title;
-    private String description;
 
     public int getId() {
         return id;
     }
 
-    private int id;
-    private String status;
-
-    public Task(String title, String description, String status) {
-        this.title = title;
-        this.description = description;
-        this.setStatus(status);
-
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status='" + status + '\'' +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -67,6 +65,16 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(title, description, id, status);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", status='" + status + '\'' +
+                '}';
     }
 }
 

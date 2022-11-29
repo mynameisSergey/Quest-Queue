@@ -42,7 +42,6 @@ public class Main {
 
         manager.removeTaskId(2);
         manager.removeEpicId(3);
-
     }
 }
 
