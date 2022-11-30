@@ -1,3 +1,9 @@
+package Metods;
+
+import Tasks.Epic;
+import Tasks.Subtask;
+import Tasks.Task;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -63,9 +69,21 @@ public class Manager {
     }
 
     public void removeEpicId(int id) { // удаление эпика из мапы по айди
-        allEpics.get(id).getSubTaskId().clear();
-        allEpics.remove(id);
+        ArrayList<Integer> number = new ArrayList<>();
+        Epic epic = allEpics.remove(id);
+        for (Subtask idSub : allSubtasks.values()) {
+            number.add(idSub.getId());
+        }
+        for (Integer integer : number) {
+            if (epic.getSubTaskId().contains(integer)) {
+                allSubtasks.remove(integer);
+            }
+            allEpics.remove(id);
+        }
     }
+
+
+
 
     public void updateEpic(Epic epic) { // обновление эпика
         if (allEpics.containsKey(epic.getId())) {
@@ -132,12 +150,14 @@ public class Manager {
 
 
     public void removeSubtaskId(int id) { // удаление подзадачи из мапы по айди
+        Subtask subtask = allSubtasks.remove(id);
         allSubtasks.remove(id);
-        allEpics.get(allSubtasks.get(id).getEpicId()).getSubTaskId().remove(allSubtasks.get(id).getId());
+        allEpics.get(subtask.getEpicId()).getSubTaskId().remove(id);
+        getStatusEpic(subtask.getEpicId());
     }
 
     public void updateSubtask(Subtask subtask) { // обновление подзадачи
-        if (allSubtasks.containsKey(subtask.getId())) {
+        if (allSubtasks.containsKey(subtask.getId()) && (allEpics.containsKey(subtask.getEpicId()))) {
             allSubtasks.put(subtask.getId(), subtask);
             getStatusEpic(allSubtasks.get(subtask.getId()).getEpicId());
         }
