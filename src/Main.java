@@ -1,4 +1,7 @@
-import Metods.Manager;
+import Metods.HistoryManager;
+import Metods.InMemoryTaskManager;
+import Metods.Managers;
+import Metods.TaskManager;
 import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
@@ -6,8 +9,9 @@ import Tasks.Task;
 public class Main {
 
     public static void main(String[] args) {
-        Manager manager = new Manager();
-
+        InMemoryTaskManager manager = new InMemoryTaskManager();
+        TaskManager taskManager = Managers.getDefault();
+        HistoryManager historyManager = Managers.getDefaultHistory();
         System.out.println("создаем таски");
         Task taskFirst = new Task("таск1", "опиcание1", "NEW");
         manager.addNewTask(taskFirst);
@@ -47,6 +51,11 @@ public class Main {
 
         manager.removeTaskId(2);
         manager.removeEpicId(3);
+
+        manager.getEpic(6);
+        manager.getSubtask(4);
+        manager.getTask(2);
+        manager.getHistory();
     }
 }
 
