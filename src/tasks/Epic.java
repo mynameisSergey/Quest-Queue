@@ -1,4 +1,4 @@
-package Tasks;
+package tasks;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -33,6 +33,8 @@ public class Epic extends Task {
         subTaskIds.remove(id);
     }
 
+    void getStatusEpic(int id) { // Управление статусами эпиков
+    }
 
     @Override
     public boolean equals(Object o) {

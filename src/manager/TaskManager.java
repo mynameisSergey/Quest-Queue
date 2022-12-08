@@ -1,13 +1,12 @@
-package Metods;
+package manager;
 import java.util.ArrayList;
 import java.util.List;
-import Tasks.Epic;
-import Tasks.Subtask;
-import Tasks.Task;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
 public interface TaskManager {
 
-    List<Integer> getHistory();
-    ArrayList<Task> getTaskViewHistory();
+    List<Task> getHistory();
     Task getTask(int id); // получение задачи по айди
 
     ArrayList<Task> getAllTask();
@@ -47,7 +46,7 @@ public interface TaskManager {
     ArrayList<Subtask> getIdSubtask(int id); // Получение списка всех подзадач определённого эпика.
 
 
-    void getStatusEpic(int id); // Управление статусами эпиков
+
 
 
     // РАБОТА С ПОДЗАДАЧАМИ

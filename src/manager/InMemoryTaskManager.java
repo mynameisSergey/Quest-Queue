@@ -1,47 +1,33 @@
-package Metods;
+package manager;
 
-import Tasks.Epic;
-import Tasks.Subtask;
-import Tasks.Task;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
+import static manager.Managers.getDefaultHistory;
 
-public class InMemoryTaskManager extends InMemoryHistoryManager implements TaskManager {
-    HistoryManager historyManager = new InMemoryHistoryManager();
-    public ArrayList<Integer> historyTasks = new ArrayList<>();
+
+public class InMemoryTaskManager implements TaskManager {
+    HistoryManager historyManager = (HistoryManager) getDefaultHistory();
     public int id = 0;
 
     // РАБОТА С ЗАДАЧАМИ
     public HashMap<Integer, Task> allTasks = new HashMap<>(); // мапа с задачами
 
     @Override
-    public List<Integer> getHistory() {
-        return historyTasks;
+    public List<Task> getHistory() { // Получение списка истории просмотренных задач
+      return historyManager.getHistory();
     }
 
-    public ArrayList<Task> getTaskViewHistory() {    //Получение списка истории просмотренных задач
-        ArrayList<Task> taskViewHistory = new ArrayList<>();
-        for (Integer taskId : historyManager.getHistory()) {
-            if (allTasks.containsKey(id)) {
-                taskViewHistory.add(allTasks.get(id));
-            }
-            if (allEpics.containsKey(taskId)) {
-                taskViewHistory.add(allEpics.get(id));
-            }
-            if (allSubtasks.containsKey(taskId)) {
-                taskViewHistory.add(allSubtasks.get(id));
-            }
-        }
-        return taskViewHistory;
-    }
-
-
+    // ВСЕ ПРО ЗАДАЧИ
     @Override
     public Task getTask(int id) { // получение задачи по айди
-        add(id);
+        Task sub = allTasks.get(id);
+        historyManager.add(sub);
         return allTasks.get(id);
     }
 
@@ -79,7 +65,8 @@ public class InMemoryTaskManager extends InMemoryHistoryManager implements TaskM
 
     @Override
     public Epic getEpic(int id) { // получение эпика по айди
-        add(id);
+        Task sub = allEpics.get(id);
+        historyManager.add(sub);
         return allEpics.get(id);
     }
 
@@ -125,8 +112,7 @@ public class InMemoryTaskManager extends InMemoryHistoryManager implements TaskM
         return subtasksEpic;
     }
 
-    @Override
-    public void getStatusEpic(int id) { // Управление статусами эпиков
+       public void getStatusEpic(int id) { // Управление статусами эпиков
         int statusSubNew = 0;
         int statusSubDone = 0;
 
@@ -161,7 +147,8 @@ public class InMemoryTaskManager extends InMemoryHistoryManager implements TaskM
 
     @Override
     public Subtask getSubtask(int id) {// получение подзадачи по айди
-        add(id);
+        Task sub = allSubtasks.get(id);
+        historyManager.add(sub);
         return allSubtasks.get(id);
     }
 
