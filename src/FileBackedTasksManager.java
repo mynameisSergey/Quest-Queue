@@ -21,29 +21,28 @@ import static tasks.TasksType.SUBTASK;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-    static void main(String[] args) {
-        HistoryManager historyManager = (HistoryManager) getDefaultHistory();
+        static void main(String[] args) {
+            HistoryManager historyManager = (HistoryManager) getDefaultHistory();
 
 
+            Task taskFirst = new Task(TASK, NEW, "Таск1", "описание1");
+            Task taskSecond = new Task(TASK, NEW, "таск2", "описание2");
+            System.out.println("Эпики с сабстасками");
+            Epic epicFirst = new Epic(EPIC, NEW, "эпик1", "эпик первый с двумя сабами");
+            Subtask subtaskFirst = new Subtask(SUBTASK, NEW, "Сабстак1", "Сабстак1 первого эпика", epicFirst.getId());
+            Subtask subtaskSecond = new Subtask(SUBTASK, NEW, "Сабстак2", "Сабстак2 первого эпика", epicFirst.getId());
+            Subtask subtaskFhird = new Subtask(SUBTASK, NEW, "Сабстак3", "Сабстак3 первого эпика", epicFirst.getId());
 
-        Task taskFirst = new Task(TASK, NEW, "Таск1", "описание1" );
-        Task taskSecond = new Task(TASK, NEW, "таск2", "описание2");
-        System.out.println("Эпики с сабстасками");
-        Epic epicFirst = new Epic(EPIC, NEW, "эпик1", "эпик первый с двумя сабами");
-        Subtask subtaskFirst = new Subtask(SUBTASK,NEW, "Сабстак1", "Сабстак1 первого эпика", epicFirst.getId());
-        Subtask subtaskSecond = new Subtask(SUBTASK, NEW, "Сабстак2", "Сабстак2 первого эпика", epicFirst.getId());
-        Subtask subtaskFhird = new Subtask(SUBTASK, NEW, "Сабстак3", "Сабстак3 первого эпика", epicFirst.getId());
-
-        historyManager.add(taskFirst);
-        historyManager.add(taskSecond);
-        historyManager.add(epicFirst);
-        historyManager.add(subtaskFirst);
-        historyManager.add(subtaskSecond);
-        historyManager.add(subtaskFhird);
-        FileBackedTasksManager.loadFromFile(new File("list.txt"));
-        System.out.println("ddddddddddd");
-        System.out.println(historyManager.getHistory());
-    }
+            historyManager.add(taskFirst);
+            historyManager.add(taskSecond);
+            historyManager.add(epicFirst);
+            historyManager.add(subtaskFirst);
+            historyManager.add(subtaskSecond);
+            historyManager.add(subtaskFhird);
+            FileBackedTasksManager.loadFromFile(new File("list.txt"));
+            System.out.println("ddddddddddd");
+            System.out.println(historyManager.getHistory());
+        }
 
     HistoryManager historyManager = (HistoryManager) getDefaultHistory();
 
