@@ -18,11 +18,9 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (containerLink.containsKey(task.getId())) {
             list.removeNode(containerLink.get(task.getId()));
         }
-
         list.linkLast(node);
         containerLink.put(task.getId(), node);
     }
-
 
     @Override
     public void remove(int id) { // удаление задачи из мапы, а потом ее удаление из истории просмотров

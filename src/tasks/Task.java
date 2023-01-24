@@ -3,30 +3,41 @@ package tasks;
 import java.util.Objects;
 
 public class Task {
-    private String title;
+    private String name;
     private String description;
     private int id;
     private Status status;
+    private TasksType type;
 
-    public Task(String title, String description, Status status) {
-        this.title = title;
+    public Task(TasksType type, Status status, String name, String description) {
+        this.name = name;
         this.description = description;
         this.setStatus(status);
+        this.type = type;
     }
 
-    public Task(String title, String description, int id, Status status) {
-        this.title = title;
+    public Task(int id, TasksType type, Status status, String name, String description) {
+        this.name = name;
         this.description = description;
         this.id = id;
         this.setStatus(status);
+        this.type = type;
     }
 
-    public String getTitle() {
-        return title;
+    public TasksType getType() {
+        return type;
+    }
+
+    public void setType(TasksType type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.name = title;
     }
 
     public String getDescription() {
@@ -60,27 +71,25 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(status, task.status);
+        return id == task.id && Objects.equals(name, task.name) && Objects.equals(description, task.description) && Objects.equals(status, task.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, id, status);
+        return Objects.hash(name, description, id, status);
     }
 
-    @Override
     public String toString() {
-        return "Task{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status='" + status + '\'' +
-                '}';
+        return "Task{" + ", id=" + id + ", type=" + type + "title='" + name + ", status='" + status + ", description='" + description + '}';
     }
 }
 
 
-    
+
+
+
+
+
 
 
 
