@@ -17,11 +17,11 @@ import static manager.Managers.getDefaultHistory;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    HistoryManager historyManager = (HistoryManager) getDefaultHistory();
+    protected HistoryManager historyManager = (HistoryManager) getDefaultHistory();
     public int id = 0;
 
     // РАБОТА С ЗАДАЧАМИ
-    public static Map<Integer, Task> allTasks = new HashMap<>(); // мапа с задачами
+    public Map<Integer, Task> allTasks = new HashMap<>(); // мапа с задачами
 
     @Override
     public List<Task> getHistory() { // Получение списка истории просмотренных задач
@@ -74,7 +74,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     // РАБОТА С ЭПИКАМИ
-    public static Map<Integer, Epic> allEpics = new HashMap<>(); // мапа с эпиками
+    public Map<Integer, Epic> allEpics = new HashMap<>(); // мапа с эпиками
 
     @Override
     public Epic getEpic(int id) { // получение эпика по айди
@@ -158,7 +158,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     // РАБОТА С ПОДЗАДАЧАМИ
-    public static Map<Integer, Subtask> allSubtasks = new HashMap<>(); // мапа с подзадачами
+    public Map<Integer, Subtask> allSubtasks = new HashMap<>(); // мапа с подзадачами
 
     @Override
     public void addNewSubtask(Subtask subtask) { // добавляем новые подзадачи

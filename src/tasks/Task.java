@@ -80,7 +80,7 @@ public class Task {
     }
 
     public String toString() {
-        return "Task{" + ", id=" + id + ", type=" + type + "title='" + name + ", status='" + status + ", description='" + description + '}';
+        return "" + id+"," + type + "," + name + "," + status + "," + description +"";
     }
 }
 
