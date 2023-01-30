@@ -36,7 +36,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         manager.getEpic(3);
         manager.save();
         loadFromFile(new File("resourses/list.csv"));
-
+        FileBackedTasksManager manager2 = loadFromFile(new File("resourses/list.csv"));
+        System.out.println(manager2.getHistory());
+        System.out.println(manager2.getAllTask().size());
+        System.out.println(manager2.getAllEpic().size());
+        System.out.println(manager2.getAllSubtask().size());
 
         }
     private String path;
@@ -134,8 +138,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         if (!value.isEmpty() && !value.isBlank()) {
 
             String[] split = value.split(",");
-            int id = Integer.parseInt(split[0]);
-            history.add(id);
+            for (int i = 0; i < split.length; i++) {
+                int id = Integer.parseInt(split[i]);
+                history.add(id);
+            }
         } else {
             System.out.println("Строка пустая");
         }
@@ -161,7 +167,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
         String lastList = list.get(list.size() - 1);
         List<Integer> historyList = historyFromString(lastList);
-        for(int id : historyList) {
+        for (Integer id : historyList) {
             fileBackedTasksManager.historyManager.add(allTask.get(id));
         }
         return fileBackedTasksManager;
