@@ -3,12 +3,10 @@ package manager;
 import tasks.Task;
 import tasks.Node;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    CustomLinkedList<Task> list = new CustomLinkedList<>();
+    private final CustomLinkedList<Task> list = new CustomLinkedList<>();
     HashMap<Integer, Node> containerLink = new HashMap<>();
     List<Task> tasks = new ArrayList<>();
 
@@ -81,8 +79,5 @@ class CustomLinkedList<T> {
             prevNode.next = nextNode;
             nextNode.prev = prevNode;
         }
-
-
     }
-
 }

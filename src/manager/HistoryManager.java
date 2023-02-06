@@ -11,4 +11,10 @@ public interface HistoryManager {
 
     List<Task> getHistory(); //возвращать их список.
 
+    class ManagerSaveException extends RuntimeException {
+
+        public ManagerSaveException(String message) {
+            super(message);
+        }
+    }
 }

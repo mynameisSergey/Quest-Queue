@@ -6,6 +6,8 @@ import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
 
+import java.time.Instant;
+
 import static tasks.Status.NEW;
 import static tasks.Status.DONE;
 import static tasks.TasksType.*;
@@ -17,29 +19,29 @@ public class Main {
         TaskManager taskManager = Managers.getDefault();
         HistoryManager historyManager = Managers.getDefaultHistory();
         System.out.println("создаем таски");
-        Task taskFirst = new Task(TASK, NEW, "Таск1", "описание1" );
+        Task taskFirst = new Task(1, TASK, "Таск1", NEW,  "описание1",  Instant.now(), 0);
         manager.addNewTask(taskFirst);
-        Task taskSecond = new Task(TASK, NEW, "таск2", "описание2");
+        Task taskSecond = new Task(9, TASK, "Таск1", NEW,  "описание1",  Instant.now(), 0);
         manager.addNewTask(taskSecond);
 
         System.out.println("Эпики с сабстасками");
-        Epic epicFirst = new Epic(EPIC, NEW, "эпик1", "эпик первый с двумя сабами");
+        Epic epicFirst = new Epic(3, EPIC, "эпик1", NEW,  "эпик первый с двумя сабами", Instant.now(), 0);
         manager.addNewEpic(epicFirst);
-        Subtask subtaskFirst = new Subtask(SUBTASK,NEW, "Сабстак1", "Сабстак1 первого эпика", epicFirst.getId());
+        Subtask subtaskFirst = new Subtask(4, SUBTASK, "Сабстак1", NEW,  "Сабстак1 первого эпика", Instant.now(), 0, epicFirst.getId());
         historyManager.add(subtaskFirst);
 
         manager.addNewSubtask(subtaskFirst);
-        Subtask subtaskSecond = new Subtask(SUBTASK, NEW, "Сабстак2", "Сабстак2 первого эпика", epicFirst.getId());
+        Subtask subtaskSecond = new Subtask(5, SUBTASK, "Сабстак1", NEW,  "Сабстак2 первого эпика", Instant.now(), 0, epicFirst.getId());
         manager.addNewSubtask(subtaskSecond);
-        Subtask subtaskFhird = new Subtask(SUBTASK, NEW, "Сабстак3", "Сабстак3 первого эпика", epicFirst.getId());
+        Subtask subtaskFhird = new Subtask(6, SUBTASK, "Сабстак1", NEW,  "Сабстак3 первого эпика", Instant.now(), 0, epicFirst.getId());
         manager.addNewSubtask(subtaskFhird);
-        Epic epicSecond = new Epic(EPIC, NEW,"эпик2", "эпик второй с одним сабом");
+        Epic epicSecond = new Epic(10, EPIC, "эпик1", NEW,  "эпик первый с двумя сабами", Instant.now(), 0);
         manager.addNewEpic(epicSecond);
         System.out.println(manager.getAllEpic()); // печать списка эпиков
         System.out.println(manager.getAllSubtask()); // печать списка подзадач
         System.out.println(manager.getAllTask()); //печать списка задач
         System.out.println("Обновление объекта и статуса эпика");
-        Subtask subtaskThird = new Subtask(SUBTASK, DONE, "Саб1", "Саб1 первого эпика", 3); // создание подзадачи
+        Subtask subtaskThird = new Subtask(8, SUBTASK, "Сабстак1", NEW,  "Сабстак1 первого эпика", Instant.now(), 0, epicFirst.getId()); // создание подзадачи
         subtaskThird.setId(4);
         manager.updateSubtask(subtaskThird);
         System.out.println(manager.getSubtask(4));
