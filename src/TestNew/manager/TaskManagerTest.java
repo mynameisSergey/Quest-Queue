@@ -1,5 +1,6 @@
 package manager;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Status;
 import tasks.Epic;
@@ -9,7 +10,7 @@ import tasks.Task;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
-
+import manager.InMemoryTaskManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static tasks.Status.*;
