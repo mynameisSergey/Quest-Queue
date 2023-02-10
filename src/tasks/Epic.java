@@ -1,13 +1,15 @@
 package tasks;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 import java.time.Instant;
-
+import java.time.LocalDateTime;
 public class Epic extends Task {
     private int epicId;
     private ArrayList<Integer> subTaskIds;
     private Instant endTime;
+    private final ArrayList<Integer> subtasksIds = new ArrayList<>();
     public Epic(TasksType type, String name, Status status, String description) {
         super(type, name, status,  description);
         this.subTaskIds = new ArrayList<>();
@@ -18,7 +20,39 @@ public class Epic extends Task {
         this.subTaskIds = new ArrayList<>();
         this.endTime = super.getEndTime();
     }
-
+    public void addSubtask(int subtaskId) {
+        subtasksIds.add(subtaskId);
+    }
+    public void calculateStatus(HashMap<Integer, Subtask> subtasksMap) {
+        boolean newExist = false;
+        status = Status.NEW;
+        if (!subtasksIds.isEmpty()) {
+            for (Integer id : subtasksIds) {
+                Subtask subtask = subtasksMap.get(id);
+                if (subtask != null) {
+                    switch (subtask.getStatus()) {
+                        case IN_PROGRESS:
+                            this.status = Status.IN_PROGRESS;
+                            return;
+                        case DONE:
+                            if (newExist) {
+                                this.status = Status.IN_PROGRESS;
+                                return;
+                            }
+                            this.status = Status.DONE;
+                            break;
+                        case NEW:
+                            newExist = true;
+                            if (this.status.equals(Status.DONE)) {
+                                this.status = Status.IN_PROGRESS;
+                                return;
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+    }
 
     public ArrayList<Integer> getSubTaskId() {
         return subTaskIds;

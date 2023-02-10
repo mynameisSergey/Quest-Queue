@@ -8,7 +8,7 @@ public class Task {
     private String name;
     private String description;
     private int id;
-    private Status status;
+    Status status;
     private TasksType type;
     private Instant startTime;
     private long duration;

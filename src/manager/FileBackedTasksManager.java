@@ -50,7 +50,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     Path pathToList = Paths.get("resourses/list.csv");
 
 
-    protected void save() { // сохранение
+    public void save() { // сохранение
         final String historyInString = historyToString(historyManager);
         String title = "id,type,name,status,description,startTime,duration,epic";
 
@@ -147,7 +147,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
 
-    static FileBackedTasksManager loadFromFile(File file) {
+    public static FileBackedTasksManager loadFromFile(File file) {
         FileBackedTasksManager fileBackedTasksManager = new FileBackedTasksManager(file.getPath());
         List<String> list = new ArrayList<>();
         try (BufferedReader fileReader = new BufferedReader(new FileReader("resourses/list.csv", StandardCharsets.UTF_8))) {

@@ -1,4 +1,82 @@
+package Tests;
+
+import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+
 import static org.junit.jupiter.api.Assertions.*;
+
+import tasks.Epic;
+import tasks.Subtask;
+import org.junit.jupiter.api.Test;
+import tasks.Status;
+
+
+
+import static tasks.Status.*;
+import static tasks.TasksType.EPIC;
+import static tasks.TasksType.SUBTASK;
+
 class EpicTest {
-  
-}
+        Epic epic;
+
+        @Test
+        void emptyEpic() {
+            epic = new Epic(12, EPIC, "эпик12", NEW,  "эпик первый с двумя сабами", Instant.now(), 0);
+            assertEquals(Status.NEW, epic.getStatus());
+        }
+
+        @Test
+        void newEpic() {
+            epic = new Epic(12, EPIC, "эпик13", NEW,  "эпик первый с двумя сабами", Instant.now(), 0);
+            HashMap<Integer, Subtask> subtasks = new HashMap<>();
+            subtasks.put(2, new Subtask(2, SUBTASK, "Сабстак1", NEW,  "Сабстак1 первого эпика", Instant.now(), 0, epic.getId()));
+            subtasks.put(3, new Subtask(3, SUBTASK, "Сабстак", NEW,  "Сабстак", Instant.now(), 0, epic.getId()));
+            subtasks.put(4, new Subtask(4, SUBTASK, "Сабстак", NEW,  "Сабстак", Instant.now(), 0, epic.getId()));
+            epic.addSubtask(2);
+            epic.addSubtask(3); // 4 сабтаску сознательно не добавляем
+            epic.calculateStatus(subtasks);
+            assertEquals(Status.NEW, epic.getStatus());
+        }
+
+        @Test
+        void doneEpic() {
+            epic = new Epic(12, EPIC, "эпик13", NEW,  "эпик первый с двумя сабами", Instant.now(), 0);
+            HashMap<Integer, Subtask> subtasks = new HashMap<>();
+            subtasks.put(2, new Subtask(2, SUBTASK, "Сабстак1", NEW,  "Сабстак1 первого эпика", Instant.now(), 0, epic.getId()));
+            subtasks.put(3, new Subtask(3, SUBTASK, "Сабстак", DONE,  "Сабстак", Instant.now(), 0, epic.getId()));
+            subtasks.put(4, new Subtask(4, SUBTASK, "Сабстак", DONE,  "Сабстак", Instant.now(), 0, epic.getId()));
+            epic.addSubtask(3);
+            epic.addSubtask(4); // 2 сабтаску сознательно не добавляем
+            epic.calculateStatus(subtasks);
+            assertEquals(DONE, epic.getStatus());
+        }
+
+        @Test
+        void newDoneEpic() {
+            epic = new Epic(12, EPIC, "эпик13", NEW,  "эпик первый с двумя сабами", Instant.now(), 0);
+            HashMap<Integer, Subtask> subtasks = new HashMap<>();
+            subtasks.put(2, new Subtask(2, SUBTASK, "Сабстак1", NEW,  "Сабстак1 первого эпика", Instant.now(), 0, epic.getId()));
+            subtasks.put(3, new Subtask(3, SUBTASK, "Сабстак", DONE,  "Сабстак", Instant.now(), 0, epic.getId()));
+            subtasks.put(4, new Subtask(4, SUBTASK, "Сабстак", DONE,  "Сабстак", Instant.now(), 0, epic.getId()));
+            epic.addSubtask(3);
+            epic.addSubtask(2); // 4 сабтаску сознательно не добавляем
+            epic.calculateStatus(subtasks);
+            assertEquals(Status.IN_PROGRESS, epic.getStatus());
+        }
+
+        @Test
+        void inProgressEpic() {
+            epic = new Epic(12, EPIC, "эпик13", NEW,  "эпик первый с двумя сабами", Instant.now(), 0);
+            HashMap<Integer, Subtask> subtasks = new HashMap<>();
+            subtasks.put(2, new Subtask(2, SUBTASK, "Сабстак1", IN_PROGRESS,  "Сабстак1 первого эпика", Instant.now(), 0, epic.getId()));
+            subtasks.put(3, new Subtask(3, SUBTASK, "Сабстак", IN_PROGRESS,  "Сабстак", Instant.now(), 0, epic.getId()));
+            subtasks.put(4, new Subtask(4, SUBTASK, "Сабстак", NEW,  "Сабстак", Instant.now(), 0, epic.getId()));
+            epic.addSubtask(3);
+            epic.addSubtask(2); // 4 сабтаску сознательно не добавляем
+            epic.calculateStatus(subtasks);
+            assertEquals(Status.IN_PROGRESS, epic.getStatus());
+        }
+    }

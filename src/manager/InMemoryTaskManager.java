@@ -211,6 +211,23 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    @Override
+    public void removeEpicId(int id) {
+        Epic epic = allEpics.get(id);
+        if (epic != null) {
+            epic.getSubTaskId().forEach(subtaskId -> {
+                prioritizedTasks.removeIf(task -> Objects.equals(task.getId(), subtaskId));
+                allSubtasks.remove(subtaskId);
+                historyManager.remove(subtaskId);
+            });
+            allEpics.remove(id);
+            historyManager.remove(id);
+        } else {
+            System.out.println("Epic not found");
+        }
+    }
+
+
     private List<Task> getPrioritizedTasks() {
         return new ArrayList<>(prioritizedTasks);
     }

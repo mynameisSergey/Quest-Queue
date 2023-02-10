@@ -1,12 +1,14 @@
-package manager;
+package TestNew.manager;
 
+import manager.FileBackedTasksManager;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import tasks.Epic;
 import tasks.Task;
-import tasks.Status;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,8 +16,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static tasks.Status.NEW;
 import static tasks.TasksType.EPIC;
 import static tasks.TasksType.TASK;
@@ -47,8 +48,8 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
 
         FileBackedTasksManager fileManager = new FileBackedTasksManager(file.getPath());
         fileManager.loadFromFile(new File("resourses/list.csv"));
-        assertEquals(List.of(task), fileManager.getAllTask());
-        assertEquals(List.of(epic), fileManager.getAllEpic());
+        Assertions.assertEquals(List.of(task), manager.getAllTask());
+        Assertions.assertEquals(List.of(epic), manager.getAllEpic());
     }
 
     @Test
@@ -56,9 +57,9 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         FileBackedTasksManager fileManager = new FileBackedTasksManager(file.getPath());
         fileManager.save();
         fileManager.loadFromFile(new File("resourses/list.csv"));
-        assertEquals(Collections.EMPTY_LIST, manager.getAllTask());
-        assertEquals(Collections.EMPTY_LIST, manager.getAllEpic());
-        assertEquals(Collections.EMPTY_LIST, manager.getAllSubtask());
+        Assertions.assertEquals(Collections.EMPTY_LIST, manager.getAllTask());
+        Assertions.assertEquals(Collections.EMPTY_LIST, manager.getAllEpic());
+        Assertions.assertEquals(Collections.EMPTY_LIST, manager.getAllSubtask());
     }
 
     @Test
@@ -66,6 +67,6 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
         FileBackedTasksManager fileManager = new FileBackedTasksManager(file.getPath());
         fileManager.save();
         fileManager.loadFromFile(new File("resourses/list.csv"));
-        assertEquals(Collections.EMPTY_LIST, manager.getHistory());
+        Assertions.assertEquals(Collections.EMPTY_LIST, manager.getHistory());
     }
 }

@@ -1,14 +1,19 @@
-package manager;
+package TestNew.manager;
 
+import manager.HistoryManager;
+import manager.InMemoryHistoryManager;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Task;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static tasks.Status.NEW;
 import static tasks.TasksType.TASK;
 
@@ -98,5 +103,14 @@ class InMemoryHistoryManagerTest {
         task.setId(newTaskId);
         manager.add(task);
         assertEquals(List.of(task), manager.getHistory());
+    }
+
+    @Test
+    void duplexTasksList() {
+        manager.add(new Task(1, TASK, "Таск1", NEW,  "описание1",  Instant.now(), 0));
+
+        manager.add(new Task(1, TASK, "Таск1", NEW,  "описание1",  Instant.now(), 0));
+
+        assertEquals(1, manager.getHistory().size(), "Дублирование одинаковых таск в истории");
     }
 }
