@@ -1,7 +1,7 @@
 package manager;
 
-import tasks.Task;
-import tasks.Node;
+import task.Task;
+import task.Node;
 
 import java.util.*;
 

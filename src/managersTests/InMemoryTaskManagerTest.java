@@ -1,5 +1,6 @@
-package TestNew.manager;
+package managersTests;
 
+import managersTests.TaskManagerTest;
 import manager.InMemoryTaskManager;
 import org.junit.jupiter.api.BeforeEach;
 

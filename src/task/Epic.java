@@ -1,10 +1,10 @@
-package tasks;
+package task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.time.Instant;
-import java.time.LocalDateTime;
+
 public class Epic extends Task {
     private int epicId;
     private ArrayList<Integer> subTaskIds;

@@ -1,9 +1,9 @@
 package manager;
 
-import tasks.*;
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
+import task.*;
+import task.Epic;
+import task.Subtask;
+import task.Task;
 
 import java.io.*;
 import java.nio.file.Files;

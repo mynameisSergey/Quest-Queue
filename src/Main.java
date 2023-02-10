@@ -2,15 +2,14 @@ import manager.HistoryManager;
 import manager.InMemoryTaskManager;
 import manager.Managers;
 import manager.TaskManager;
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
+import task.Epic;
+import task.Subtask;
+import task.Task;
 
 import java.time.Instant;
 
-import static tasks.Status.NEW;
-import static tasks.Status.DONE;
-import static tasks.TasksType.*;
+import static task.Status.NEW;
+import static task.TasksType.*;
 
 public class Main {
 

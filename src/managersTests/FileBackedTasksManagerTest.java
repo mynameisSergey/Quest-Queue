@@ -1,5 +1,6 @@
-package TestNew.manager;
+package managersTests;
 
+import managersTests.TaskManagerTest;
 import manager.FileBackedTasksManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
