@@ -5,16 +5,16 @@ import org.junit.jupiter.api.Assertions;
 
 import org.junit.jupiter.api.Test;
 
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
+import task.Epic;
+import task.Subtask;
+import task.Task;
 
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
-import static tasks.Status.*;
-import static tasks.TasksType.*;
+import static task.Status.*;
+import static task.TasksType.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
     protected T manager;

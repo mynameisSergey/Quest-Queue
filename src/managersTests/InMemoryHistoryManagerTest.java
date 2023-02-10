@@ -2,20 +2,18 @@ package TestNew.manager;
 
 import manager.HistoryManager;
 import manager.InMemoryHistoryManager;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tasks.Task;
+import task.Task;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static tasks.Status.NEW;
-import static tasks.TasksType.TASK;
+import static task.Status.NEW;
+import static task.TasksType.TASK;
 
 class InMemoryHistoryManagerTest {
     HistoryManager manager;

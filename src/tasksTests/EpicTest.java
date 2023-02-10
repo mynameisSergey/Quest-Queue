@@ -1,23 +1,21 @@
-package Tests;
+package tests;
 
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import tasks.Epic;
-import tasks.Subtask;
-import org.junit.jupiter.api.Test;
-import tasks.Status;
+import task.Epic;
+import task.Subtask;
+import task.Status;
 
 
 
-import static tasks.Status.*;
-import static tasks.TasksType.EPIC;
-import static tasks.TasksType.SUBTASK;
+import static task.Status.*;
+import static task.TasksType.EPIC;
+import static task.TasksType.SUBTASK;
 
 class EpicTest {
         Epic epic;

@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import tasks.Epic;
-import tasks.Task;
+import task.Epic;
+import task.Task;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,9 +17,9 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
-import static tasks.Status.NEW;
-import static tasks.TasksType.EPIC;
-import static tasks.TasksType.TASK;
+import static task.Status.NEW;
+import static task.TasksType.EPIC;
+import static task.TasksType.TASK;
 
 class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
     private Path path = Path.of("resourses/list.csv");
