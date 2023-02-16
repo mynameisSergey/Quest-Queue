@@ -244,7 +244,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
 
-    private List<Task> getPrioritizedTasks() {
+    public List<Task> getPrioritizedTasks() {
         return new ArrayList<>(prioritizedTasks);
     }
 

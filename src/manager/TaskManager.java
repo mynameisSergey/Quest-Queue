@@ -74,6 +74,6 @@ public interface TaskManager {
     void removeAllSubtaskByEpic(Epic epic);
 
     void updateSubtask(Subtask subtask); // обновление подзадачи
-
+    List<Task> getPrioritizedTasks();
 
 }
