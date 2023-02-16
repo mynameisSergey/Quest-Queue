@@ -16,7 +16,7 @@ import java.util.List;
 import static task.Status.*;
 import static task.TasksType.*;
 
-abstract class TaskManagerTest<T extends TaskManager> {
+public abstract class TaskManagerTest<T extends TaskManager> {
     protected T manager;
     Epic epic;
     protected Task addNewTask() {
