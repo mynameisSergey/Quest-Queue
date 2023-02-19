@@ -4,20 +4,11 @@ import task.Epic;
 import task.Subtask;
 import task.Task;
 
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static task.Status.NEW;
-import static task.Status.DONE;
-import static task.Status.IN_PROGRESS;
-
 import java.time.Instant;
 import java.util.*;
 
-
 import static manager.Managers.getDefaultHistory;
+import static task.TasksStatus.Status.*;
 
 
 public class InMemoryTaskManager implements TaskManager {
@@ -113,7 +104,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task addNewTask(Task task) { // добавление задачи в мапу
         if (task == null) return null;
-        int newTaskId = generateId();
+        int newTaskId = task.getId();
         task.setId(newTaskId);
         addNewPrioritizedTask(task);
         allTasks.put(newTaskId, task);
@@ -359,53 +350,96 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    private void addNewPrioritizedTask(Task task) {
-        prioritizedTasks.add(task);
-        validateTaskPriority();
-    }
+    //public void addNewPrioritizedTask(Task task) {
+   //     prioritizedTasks.add(task);
+   //     validateTaskPriority();
+   // }
 
-    public boolean checkTime(Task task) {
-        List<Task> tasks = List.copyOf(prioritizedTasks);
-        int sizeTimeNull = 0;
-        if (tasks.size() > 0) {
-            for (Task taskSave : tasks) {
-                if (taskSave.getStartTime() != null && taskSave.getEndTime() != null) {
-                    if (task.getStartTime().isBefore(taskSave.getStartTime())
-                            && task.getEndTime().isBefore(taskSave.getStartTime())) {
-                        return true;
-                    } else if (task.getStartTime().isAfter(taskSave.getEndTime())
-                            && task.getEndTime().isAfter(taskSave.getEndTime())) {
-                        return true;
-                    }
-                } else {
-                    sizeTimeNull++;
-                }
+   // public boolean checkTime(Task task) {
+      //  List<Task> tasks = List.copyOf(prioritizedTasks);
+      //  int sizeTimeNull = 0;
+      //  if (tasks.size() > 0) {
+      //      for (Task taskSave : tasks) {
+       //         if (taskSave.getStartTime() != null && taskSave.getEndTime() != null) {
+       //             if (task.getStartTime().isBefore(taskSave.getStartTime())
+         //                   && task.getEndTime().isBefore(taskSave.getStartTime())) {
+         //               return true;
+          //          } else if (task.getStartTime().isAfter(taskSave.getEndTime())
+           //                 && task.getEndTime().isAfter(taskSave.getEndTime())) {
+            //            return true;
+             //       }
+             //   } else {
+              //      sizeTimeNull++;
+              //  }
 
+          //  }
+          //  return sizeTimeNull == tasks.size();
+       // } else {
+       //     return true;
+      // }
+  //  }
+
+   // private void validateTaskPriority() {
+     //   List<Task> tasks = getPrioritizedTasks();
+
+      //  for (int i = 1; i < tasks.size(); i++) {
+        ///    Task task = tasks.get(i);
+//
+           // boolean taskHasIntersections = checkTime(task);
+
+           // if (taskHasIntersections) {
+           //     try {
+           //         throw new ManagerValidateException(
+           //                 "Задачи " + task.getId() + " и " + tasks.get(i - 1) + "пересекаются");
+            //    } catch (ManagerSaveException e) {
+            //        throw new RuntimeException(e);
+           //     }
+           // }
+       // }
+  //  }
+
+           public void addNewPrioritizedTask(Task task) {
+               checkTime(task);
+               prioritizedTasks.add(task);
+           }
+
+
+    private void checkTime(Task task) {
+        for (Task taskSave : prioritizedTasks) {
+            if (task.getStartTime() == null || taskSave.getStartTime() == null) {
+                return;
             }
-            return sizeTimeNull == tasks.size();
-        } else {
-            return true;
+            if (!task.getEndTime().isAfter(taskSave.getStartTime())) {
+                continue;
+            }
+            if (!task.getStartTime().isBefore(taskSave.getEndTime())) {
+                continue;
+            }
+            throw new ManagerValidateException("Задачи #" + task + " и #" + taskSave + "пересекаются");
         }
     }
 
-    private void validateTaskPriority() {
-        List<Task> tasks = getPrioritizedTasks();
+    @Override
+    public Map<Integer, Task> getTasks() {
 
-        for (int i = 1; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
+        return allTasks;
 
-            boolean taskHasIntersections = checkTime(task);
-
-            if (taskHasIntersections) {
-                try {
-                    throw new ManagerValidateException(
-                            "Задачи " + task.getId() + " и " + tasks.get(i - 1) + "пересекаются");
-                } catch (ManagerSaveException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
     }
+
+    @Override
+    public Map<Integer, Epic> getEpics() {
+
+        return allEpics;
+
+    }
+
+    @Override
+    public Map<Integer, Subtask> getSubtasks() {
+
+        return allSubtasks;
+
+    }
+
 }
 
 

@@ -1,9 +1,14 @@
 package task;
 
+import task.TasksStatus.Status;
+import task.TasksType.TasksType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.time.Instant;
+
+import static task.TasksStatus.Status.IN_PROGRESS;
 
 public class Epic extends Task {
     private int epicId;
@@ -32,11 +37,11 @@ public class Epic extends Task {
                 if (subtask != null) {
                     switch (subtask.getStatus()) {
                         case IN_PROGRESS:
-                            this.status = Status.IN_PROGRESS;
+                            this.status = IN_PROGRESS;
                             return;
                         case DONE:
                             if (newExist) {
-                                this.status = Status.IN_PROGRESS;
+                                this.status = IN_PROGRESS;
                                 return;
                             }
                             this.status = Status.DONE;
@@ -44,7 +49,7 @@ public class Epic extends Task {
                         case NEW:
                             newExist = true;
                             if (this.status.equals(Status.DONE)) {
-                                this.status = Status.IN_PROGRESS;
+                                this.status = IN_PROGRESS;
                                 return;
                             }
                             break;
@@ -94,6 +99,8 @@ public class Epic extends Task {
         return epicId == epic.epicId && Objects.equals(subTaskIds, epic.subTaskIds);
     }
 
+
+
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), subTaskIds);
@@ -103,6 +110,6 @@ public class Epic extends Task {
     public String toString() {
         return "" + getId() + "," + getType() + "," + getName() +
                 "," + getStatus() + "," + getDescription() + "," + getStartTime().toEpochMilli() +
-                "," + getEndTime().toEpochMilli() + "," +  getDuration() + ",";
+                "," + getEndTime().toEpochMilli() + "," +  getDuration() + "";
     }
 }

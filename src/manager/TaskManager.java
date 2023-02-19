@@ -1,14 +1,22 @@
 package manager;
 
-import java.util.List;
-
 import task.Epic;
 import task.Subtask;
 import task.Task;
 
+import java.util.List;
+import java.util.Map;
+
 public interface TaskManager {
+    Map<Integer, Task> getTasks();
 
     List<Task> getHistory();
+
+    Map<Integer, Epic> getEpics();
+
+
+    Map<Integer, Subtask> getSubtasks();
+
 
     Task getTask(int id); // получение задачи по айди
 

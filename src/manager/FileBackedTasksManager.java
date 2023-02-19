@@ -1,9 +1,11 @@
 package manager;
 
-import task.*;
+import task.TasksStatus.Status;
+import task.TasksType.*;
 import task.Epic;
 import task.Subtask;
 import task.Task;
+
 
 import java.io.*;
 import java.nio.file.Files;
@@ -23,12 +25,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         FileBackedTasksManager manager = new FileBackedTasksManager("resourses/list.csv");
 
 
-        manager.fromString("1,TASK,Таск1,NEW,описание1,2022-02-06T19:42:02.234702Z,0");
-        manager.fromString("2,TASK,таск2,NEW,описание2,2021-02-06T19:42:02.234702Z,0");
-        manager.fromString("3,EPIC,эпик1,NEW,эпикпервыйсдвумясабами,2020-02-06T19:42:02.234702Z,0");
-        manager.fromString("4,SUBTASK,Сабстак1,NEW,Сабстак1первогоэпика,2019-02-06T19:42:02.234702Z,0,3");
-        manager.fromString("5,SUBTASK,Сабстак2,NEW,Сабстак2первогоэпика,2018-02-06T19:42:02.234702Z,0,3");
-        manager.fromString("6,SUBTASK,Сабстак3,NEW,Сабстак3первогоэпика,2017-02-06T19:42:02.234702Z,0,3");
+        manager.fromString("1,TASK,Таск1,NEW,описание1,110000000000,0");
+        manager.fromString("2,TASK,таск2,NEW,описание2,110000000000,0");
+        manager.fromString("3,EPIC,эпик1,NEW,эпикпервыйсдвумясабами,110000000000,0");
+        manager.fromString("4,SUBTASK,Сабстак1,NEW,Сабстак1первогоэпика,110000000000,0,3");
+        manager.fromString("5,SUBTASK,Сабстак2,NEW,Сабстак2первогоэпика,110000000000,0,3");
+        manager.fromString("6,SUBTASK,Сабстак3,NEW,Сабстак3первогоэпика,110000000000,0,3");
         manager.getTask(1);
         manager.getTask(2);
         manager.getEpic(3);
@@ -100,9 +102,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String name = split[2];
         Status status = Status.valueOf(split[3]);
         String description = split[4];
-        Instant startTime = Instant.parse(split[5]);
+        Instant startTime = Instant.ofEpochSecond(Long.parseLong(split[5]));
         long duration = Long.parseLong(split[6]);
-        Integer epicId = type.equals("SUBTASK") ? Integer.parseInt(split[7]) : null;
+
 
         switch (type) {
             case EPIC:
@@ -114,10 +116,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 return task;
 
             case SUBTASK:
+                Integer epicId = Integer.parseInt(split[7]);
                 task = new Subtask(id, type, name,  status,  description, startTime, duration, epicId);
                 task.setId(id);
                 allSubtasks.put(id, (Subtask) task);
                 allTask.put(id, task);
+                Epic epic =allEpics.get(epicId);
                 return task;
 
             case TASK:

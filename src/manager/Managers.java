@@ -1,7 +1,8 @@
 package manager;
-import http.HTTPTaskManager;
-import http.KVServer;
 
+import manager.http.KVServer;
+
+import java.io.File;
 import java.io.IOException;
 
 public class Managers {
@@ -15,5 +16,7 @@ public class Managers {
     public static HTTPTaskManager getDefault(HistoryManager historyManager) throws IOException, InterruptedException {
         return new HTTPTaskManager(historyManager, "http://localhost:" + KVServer.PORT);
     }
-
+    public static TaskManager getFileBacked(String file) {
+        return FileBackedTasksManager.loadFromFile(new File(file));
+    }
 }

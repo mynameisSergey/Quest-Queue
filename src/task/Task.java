@@ -1,6 +1,10 @@
 package task;
 
+import task.TasksStatus.Status;
+import task.TasksType.TasksType;
+
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 
@@ -16,7 +20,7 @@ public class Task {
     public Task(TasksType type, String name, Status status, String description) {
         this.name = name;
         this.description = description;
-        this.setStatus(status);
+        this.status = status;
         this.type = type;
     }
 
@@ -24,7 +28,7 @@ public class Task {
         this.name = name;
         this.description = description;
         this.id = id;
-        this.setStatus(status);
+        this.status = status;
         this.type = type;
         this.startTime = startTime;
         this.duration = duration;
@@ -92,21 +96,28 @@ public class Task {
     }
 
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && duration == task.duration && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status && type == task.type && Objects.equals(startTime, task.startTime);
+        return id == task.id && Objects.equals(description, task.description) &&
+                Objects.equals(name, task.name)
+                && status == task.status
+                && Objects.equals(startTime.truncatedTo(ChronoUnit.SECONDS),
+                task.startTime.truncatedTo(ChronoUnit.SECONDS))
+                && Objects.equals(duration, task.duration);
     }
+
+
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, id, status, type, startTime, duration);
+        return Objects.hash(description, id, name, status, startTime, duration);
     }
-
     public String toString() {
-        return "" + id + "," + type + "," + name + "," + status + "," + description + "," + startTime + "," + duration + "";
+        return "" + id + "," + type + "," + name + "," + status + "," + description + "," + startTime.toEpochMilli() + "," + getEndTime().toEpochMilli() + "," + duration + "";
     }
 }
 
