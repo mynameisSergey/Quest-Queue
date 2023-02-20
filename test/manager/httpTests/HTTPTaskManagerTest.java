@@ -31,8 +31,7 @@ class HTTPTaskManagerTest extends TaskManagerTest<HTTPTaskManager> {
         try {
             server = new KVServer();
             server.start();
-            HistoryManager historyManager = Managers.getDefaultHistory();
-            manager = Managers.getDefault(historyManager);
+            manager = Managers.getDefault();
             System.out.println("Все успешно!");
         } catch (IOException | InterruptedException e) {
             System.out.println("Ошибка при создании менеджера");

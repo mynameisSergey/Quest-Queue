@@ -1,14 +1,14 @@
 package manager.http;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Постман: https://www.getpostman.com/collections/a83b61d9e1c81c10575c
@@ -52,9 +52,10 @@ public class KVServer {
                         return;
                     }
                     String response = data.get(key);
+                    httpExchange.sendResponseHeaders(200, 0);
                     sendText(httpExchange, response);
                     System.out.println("Значение для ключа " + key + " успешно отправлено в ответ на запрос!");
-                    httpExchange.sendResponseHeaders(200, 0);
+
                 } else {
                     System.out.println("/load ждет GET-запрос, а получил: " + httpExchange.getRequestMethod());
                     httpExchange.sendResponseHeaders(405, 0);

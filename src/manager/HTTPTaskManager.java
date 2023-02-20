@@ -25,8 +25,8 @@ public class HTTPTaskManager extends FileBackedTasksManager {
         return client;
 
     }
-    public HTTPTaskManager(HistoryManager historyManager, String path) throws IOException, InterruptedException {
-        super(historyManager.toString());
+    public HTTPTaskManager(String path) throws IOException, InterruptedException {
+        super(path);
         client = new KVTaskClient(path);
 
         JsonElement jsonTasks = JsonParser.parseString(client.load(KEY_TASKS));

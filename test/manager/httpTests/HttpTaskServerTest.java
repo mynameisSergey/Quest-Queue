@@ -499,8 +499,7 @@ class HttpTaskServerTest {
 
     @Test
     void shouldGetPrioritizedTasksTest() throws IOException, InterruptedException {
-        HistoryManager historyManager = Managers.getDefaultHistory();
-        TaskManager manager = Managers.getDefault(historyManager);
+       TaskManager manager = Managers.getDefault();
         HttpClient client = HttpClient.newHttpClient();
         URI url = URI.create(TASK_BASE_URL);
         Task task1 = new Task(1, TASK, "Таск1", NEW, "описание1", Instant.now(), 1);
