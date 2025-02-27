@@ -7,4 +7,5 @@ public enum EndpointEpic {
     DELETE_EPIC_BY_ID,
     DELETE_ALL_EPICS,
     UNKNOWN
+
 }

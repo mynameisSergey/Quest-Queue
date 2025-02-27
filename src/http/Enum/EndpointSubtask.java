@@ -6,6 +6,5 @@ public enum EndpointSubtask {
     POST_SUBTASK,
     DELETE_SUBTASK_BY_ID,
     DELETE_ALL_SUBTASKS,
-    GET_SUBTASKS_BY_EPIC_ID,
     UNKNOWN
 }

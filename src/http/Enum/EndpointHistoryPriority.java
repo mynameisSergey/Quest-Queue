@@ -4,4 +4,5 @@ public enum EndpointHistoryPriority {
     GET_HISTORY,
     GET_PRIORITY,
     UNKNOWN
+
 }

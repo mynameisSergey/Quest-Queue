@@ -1,7 +1,8 @@
 package http.handlers;
 
-import exception.*;
+import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
+import exception.HttpException;
 import http.Enum.EndpointEpic;
 import model.Epic;
 import service.TaskManager;
@@ -83,20 +84,34 @@ public class HandlerEpic extends HandlerTask {
     protected void handlePost(HttpExchange httpExchange) throws IOException { // добавление или обновление эпика
         List<Epic> listEpics = taskManager.getArrayEpic();
         String bodyRequest = new String(httpExchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
+
         try {
             Epic epic = gson.fromJson(bodyRequest, Epic.class);
-            if (epic == null)
-                writeResponse(httpExchange, "Эпик не может быть пустой", 400);
 
-            if (!listEpics.contains(epic)) {
+            if (epic == null) {
+                writeResponse(httpExchange, "Эпик не может быть пустым", 400);
+                return; // Завершение выполнения метода
+            }
+
+            // Проверяем по идентификатору
+            if (epic.getId() <= 0) {
+                writeResponse(httpExchange, "Некорректный идентификатор эпика", 400);
+                return;
+            }
+
+            if (!listEpics.stream().anyMatch(existingEpic -> existingEpic.getId() == epic.getId())) {
                 taskManager.putEpic(epic);
-                writeResponse(httpExchange, gson.toJson("Эпик добавлен"), 200);
+                writeResponse(httpExchange, gson.toJson("Эпик добавлен"), 201); // Код 201 для создания
             } else {
                 taskManager.updateEpic(epic);
                 writeResponse(httpExchange, gson.toJson("Эпик обновлен"), 200);
             }
-        } catch (IOException | RuntimeException e) {
-            writeResponse(httpExchange, "Ошибка обработки запроса", 500); // Возвращаем 500 в случае ошибки
+        } catch (JsonSyntaxException e) {
+            writeResponse(httpExchange, "Ошибка в формате JSON", 400);
+        } catch (IOException e) {
+            writeResponse(httpExchange, "Ошибка обработки запроса", 500);
+        } catch (RuntimeException e) {
+            writeResponse(httpExchange, "Неизвестная ошибка: " + e.getMessage(), 500);
         }
     }
 
