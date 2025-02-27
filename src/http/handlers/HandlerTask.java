@@ -22,16 +22,12 @@ import java.util.List;
 public class HandlerTask implements HttpHandler {
 
     protected static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-
     protected static final Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
-
-
     protected final TaskManager taskManager;
 
     public HandlerTask(TaskManager taskManager) {
         this.taskManager = taskManager;
     }
-
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -66,7 +62,6 @@ public class HandlerTask implements HttpHandler {
         }
     }
 
-
     private void handleGetTasks(HttpExchange httpExchange) throws IOException { // возвращает список Тасок
         writeResponse(httpExchange, gson.toJson(taskManager.getArrayTask()), 200);
     }
@@ -74,7 +69,6 @@ public class HandlerTask implements HttpHandler {
     protected void handleGetById(HttpExchange httpExchange) throws HttpException, IOException { // возвращает задачу по id
         List<Task> listTasks = taskManager.getArrayTask();
         String idValue = httpExchange.getRequestURI().getQuery().split("=")[1];
-
 
         if (idValue.isEmpty()) {
             writeResponse(httpExchange, "Некорректный идентификатор задачи", 400);
@@ -91,7 +85,6 @@ public class HandlerTask implements HttpHandler {
         } catch (IOException | RuntimeException e) {
             throw new HttpException("Не удалось сериализовать задачу", e);
         }
-
     }
 
     protected void handlePost(HttpExchange httpExchange) throws IOException {
@@ -139,7 +132,6 @@ public class HandlerTask implements HttpHandler {
         } catch (IOException | RuntimeException e) {
             throw new HttpException("Задача со следующим id не удалилась" + id, e);
         }
-
     }
 
     protected void handleDeleteAll(HttpExchange httpExchange) throws IOException { // удаление всех задач
@@ -149,7 +141,6 @@ public class HandlerTask implements HttpHandler {
             writeResponse(httpExchange, gson.toJson("Нельзя очистить пустой список задач."), 400);
             return;
         }
-
         try {
             taskManager.clearMapOfTask();
             writeResponse(httpExchange, gson.toJson(taskManager.getArrayTask()), 200);
@@ -160,32 +151,29 @@ public class HandlerTask implements HttpHandler {
         }
     }
 
-
-    private EndpointTask getEndpoint(HttpExchange httpExchange,String requestMethod) {
+    private EndpointTask getEndpoint(HttpExchange httpExchange, String requestMethod) {
         String query = httpExchange.getRequestURI().getQuery();
 
-            if (query == null) { // Путь /tasks
-                if (requestMethod.equals("GET")) {
-                    return EndpointTask.GET_TASKS;
-                } else if (requestMethod.equals("POST")) {
-                    return EndpointTask.POST_TASK;
-                } else if (requestMethod.equals("DELETE")) {
-                    return EndpointTask.DELETE_ALL_TASKS;
-                }
-
+        if (query == null) { // Путь /tasks
+            if (requestMethod.equals("GET")) {
+                return EndpointTask.GET_TASKS;
+            } else if (requestMethod.equals("POST")) {
+                return EndpointTask.POST_TASK;
+            } else if (requestMethod.equals("DELETE")) {
+                return EndpointTask.DELETE_ALL_TASKS;
             }
+        }
 
-            if (query != null) { // Путь /tasks/{id}
-                if (requestMethod.equals("GET")) {
-                    return EndpointTask.GET_TASK_BY_ID;
-                } else if (requestMethod.equals("DELETE")) {
-                    return EndpointTask.DELETE_TASK_BY_ID;
-                }
+        if (query != null) { // Путь /tasks/{id}
+            if (requestMethod.equals("GET")) {
+                return EndpointTask.GET_TASK_BY_ID;
+            } else if (requestMethod.equals("DELETE")) {
+                return EndpointTask.DELETE_TASK_BY_ID;
             }
+        }
 
         return EndpointTask.UNKNOWN;
     }
-
 
     protected void writeResponse(HttpExchange httpExchange, String response, int responseCode) throws IOException {
         if (response == null || response.isBlank() || response.equals("null")) {
@@ -204,6 +192,5 @@ public class HandlerTask implements HttpHandler {
             }
         }
     }
-
 
 }

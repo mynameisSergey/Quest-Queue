@@ -45,7 +45,6 @@ public class HandlerSubtask extends HandlerTask {
         }
     }
 
-
     private void handleGetSubtasks(HttpExchange httpExchange) throws IOException { // возвращает список Субтасок
         writeResponse(httpExchange, gson.toJson(taskManager.getArraySubtask()), 200);
     }
@@ -101,7 +100,6 @@ public class HandlerSubtask extends HandlerTask {
         List<Subtask> listSubtask = taskManager.getArraySubtask();
         String idValue = httpExchange.getRequestURI().getQuery().split("=")[1];
 
-
         if (idValue.trim().isEmpty()) {
             writeResponse(httpExchange, "Некорректный идентификатор субтаски", 400);
             return;
@@ -117,7 +115,6 @@ public class HandlerSubtask extends HandlerTask {
         } catch (IOException | RuntimeException e) {
             throw new HttpException("Субтаска со следующим id не удалилась" + id, e);
         }
-
     }
 
     @Override
@@ -131,12 +128,11 @@ public class HandlerSubtask extends HandlerTask {
             }
             taskManager.clearMapOfSubtask();
             writeResponse(httpExchange, gson.toJson(taskManager.getArraySubtask()), 200);
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Субтаска падает");
         }
     }
-
 
     private EndpointSubtask getEndpoint(HttpExchange httpExchange, String requestMethod) { //создание эндпоинта субтасок
         String query = httpExchange.getRequestURI().getQuery();

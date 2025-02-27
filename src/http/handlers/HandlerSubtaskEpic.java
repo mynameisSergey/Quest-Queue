@@ -13,7 +13,6 @@ public class HandlerSubtaskEpic extends HandlerTask {
         super(taskManager);
     }
 
-
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String[] pathParts = httpExchange.getRequestURI().getPath().split("/");
@@ -24,7 +23,6 @@ public class HandlerSubtaskEpic extends HandlerTask {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
-
         }
     }
 

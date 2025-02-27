@@ -23,7 +23,6 @@ public class HandlerPriority extends HandlerTask{
         }
     }
 
-
     private void handleGetPriority(HttpExchange httpExchange) throws IOException { //приорити Таски
        writeResponse(httpExchange, gson.toJson(taskManager.getPrioritizedTasks()), 200);
     }
@@ -37,6 +36,5 @@ public class HandlerPriority extends HandlerTask{
 
         return EndpointHistoryPriority.UNKNOWN;
     }
-
 
 }
