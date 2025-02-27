@@ -8,4 +8,5 @@ public class HttpException extends Throwable {
     public HttpException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }
