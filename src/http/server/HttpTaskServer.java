@@ -23,7 +23,6 @@ public class HttpTaskServer {
         httpServer.createContext("/tasks/history/", new HandlerHistory(taskManager));
         httpServer.createContext("/tasks/", new HandlerPriority(taskManager));
         System.out.println("Сервер запущен:" + PORT);
-
     }
 
     public void startServer() {
