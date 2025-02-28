@@ -30,4 +30,5 @@ public class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
         String time = value.format(FORMATTER);
         writer.value(time);
     }
+
 }
