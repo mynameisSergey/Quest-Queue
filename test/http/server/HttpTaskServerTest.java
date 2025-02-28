@@ -31,7 +31,6 @@ class HttpTaskServerTest {
     private static final String EPIC_BASE_URL = "http://localhost:8080/tasks/epic/";
     private static final String SUBTASK_BASE_URL = "http://localhost:8080/tasks/subtask/";
 
-
     @BeforeAll
     static void startServer() {
         try {
@@ -44,7 +43,6 @@ class HttpTaskServerTest {
             e.printStackTrace();
         }
     }
-
 
     @AfterAll
     static void stopServer() {
@@ -184,7 +182,6 @@ class HttpTaskServerTest {
             fail("Тест завершился с ошибкой: " + e.getMessage()); // Завершаем тест с ошибкой
         }
     }
-
 
     @DisplayName("GIVEN a new Task " +
             "WHEN a new Task is created " +
@@ -600,7 +597,6 @@ class HttpTaskServerTest {
         }
     }
 
-
    /* @Test
     void test_15_shouldGetPtiority() {
         try {
@@ -621,6 +617,5 @@ class HttpTaskServerTest {
             fail("Ошибка при отправке GET-запроса: " + e.getMessage());
         }
     }*/
-
 
 }
