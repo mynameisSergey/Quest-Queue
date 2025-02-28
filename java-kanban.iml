@@ -5,7 +5,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/out" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/resourses" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" /> <!-- Исправлено -->
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -42,6 +42,8 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="google.code.gson" level="project" />
+    <orderEntry type="library" name="google.code.gson" level="project">
+      <!-- Добавить пути к jar-файлам Gson здесь -->
+    </orderEntry>
   </component>
 </module>
