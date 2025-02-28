@@ -1,6 +1,6 @@
 id,type,title,description,status,startTime,duration,epicId
-1,TASK,ewer,erwer,NEW,111111111,0
-2,EPIC,wqewвe,qweqe,NEW,1111111,0
-3,SUBTASK,wewr,werwer,NEW,11111111,0,2
+1,TASK,погулять,в парке,NEW,111111111,0
+2,EPIC,поспать,дома,NEW,1111111,0
+3,SUBTASK,поиграть,в игры,NEW,11111111,0,2
 
 3,4
