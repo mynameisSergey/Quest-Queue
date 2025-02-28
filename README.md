@@ -1,4 +1,4 @@
-# java-kanban
+# Quest-Queue
 
 ![](https://github.com/mynameisSergey/java-kanban/blob/main/img/%D0%A1%D1%85%D0%B5%D0%BC%D0%B0.png)
 
