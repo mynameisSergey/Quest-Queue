@@ -98,7 +98,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-
     //    РАБОТА С EPIC
     @Override
     public ArrayList<Epic> getArrayEpic() { // возвращает список Epic из мапы
@@ -142,7 +141,6 @@ public class InMemoryTaskManager implements TaskManager {
         epicMap.put(epic.getId(), epic);
     }
 
-
     @Override
     public void updateEpic(Epic epic) { // обновление Epic и изменение статуса
         if (epic != null && epicMap.containsKey(epic.getId())) {
@@ -172,41 +170,69 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-
     public void updateTimeEpic(Epic epic) { // обновление времени эпика
         List<Subtask> subtasks = getArraySubtaskOfId(epic.getId());
-        Instant startTime = subtasks.get(0).getStartTime();
-        Instant endTime = subtasks.get(0).getEndTime();
+
+        // Проверка на наличие подзадач
+        if (subtasks.isEmpty()) {
+            epic.setStartTime(null);
+            epic.setEndTime(null);
+            epic.setDuration(0); // Устанавливаем длительность в 0, если нет подзадач
+            return;
+        }
+
+        Instant startTime = null;
+        Instant endTime = null;
 
         for (Subtask subtask : subtasks) {
-            if (subtask.getStartTime().isBefore(startTime)) startTime = subtask.getStartTime();
-            if (subtask.getEndTime().isAfter(endTime)) endTime = subtask.getEndTime();
+            // Проверка на null перед сравнением
+            if (subtask.getStartTime() != null && (startTime == null || subtask.getStartTime().isBefore(startTime))) {
+                startTime = subtask.getStartTime();
+            }
+            if (subtask.getEndTime() != null && (endTime == null || subtask.getEndTime().isAfter(endTime))) {
+                endTime = subtask.getEndTime();
+            }
         }
 
         epic.setStartTime(startTime);
         epic.setEndTime(endTime);
-        long duration = (endTime.toEpochMilli() - startTime.toEpochMilli());
-        epic.setDuration(duration);
+
+        // Вычисление продолжительности только если startTime и endTime не null
+        if (startTime != null && endTime != null) {
+            long duration = endTime.toEpochMilli() - startTime.toEpochMilli();
+            epic.setDuration(duration);
+        } else {
+            epic.setDuration(0); // Если нет корректных временных меток, устанавливаем длительность в 0
+        }
     }
 
 
     @Override
     public void getStatusEpic(int id) { // Управление статусами эпиков
+        if (!epicMap.containsKey(id) || epicMap.get(id).getSubtaskArrayList() == null) {
+            throw new IllegalArgumentException("Эпик с указанным ID не найден или не имеет подзадач");
+        }
+
         int statusSubNew = 0;
         int statusSubDone = 0;
-        for (Integer idSub : epicMap.get(id).getSubtaskArrayList()) {
-            if (subtaskMap.get(idSub).getStatus().equals(StatusTasks.NEW)) {
+        List<Integer> subtaskIds = epicMap.get(id).getSubtaskArrayList();
+
+        for (Integer idSub : subtaskIds) {
+            StatusTasks status = subtaskMap.get(idSub).getStatus();
+            if (status.equals(StatusTasks.NEW)) {
                 statusSubNew++;
-            } else if (subtaskMap.get(idSub).getStatus().equals(StatusTasks.DONE)) {
+            } else if (status.equals(StatusTasks.DONE)) {
                 statusSubDone++;
             }
-            if (epicMap.get(id).getSubtaskArrayList() == null || statusSubNew == epicMap.get(id).getSubtaskArrayList().size()) {
-                epicMap.get(id).setStatus(StatusTasks.NEW);
-            } else if (statusSubDone == epicMap.get(id).getSubtaskArrayList().size()) {
-                epicMap.get(id).setStatus(StatusTasks.DONE);
-            } else {
-                epicMap.get(id).setStatus(StatusTasks.IN_PROGRESS);
-            }
+        }
+
+        // Установка статуса эпика на основе подсчитанных значений
+        if (statusSubNew == subtaskIds.size()) {
+            epicMap.get(id).setStatus(StatusTasks.NEW);
+        } else if (statusSubDone == subtaskIds.size()) {
+            epicMap.get(id).setStatus(StatusTasks.DONE);
+        } else {
+            epicMap.get(id).setStatus(StatusTasks.IN_PROGRESS);
         }
     }
 
@@ -252,10 +278,7 @@ public class InMemoryTaskManager implements TaskManager {
                 historyManager.remove(subtaskId);
             }
             epic.getSubtaskArrayList().clear();
-
         }
-
-
     }
 
     @Override
@@ -296,7 +319,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-
     @Override
     public Subtask getSubtaskOfId(int id) { // получение Subtask по id
         Subtask subtask = null;
@@ -329,7 +351,6 @@ public class InMemoryTaskManager implements TaskManager {
         updateTimeEpic(epicMap.get(subtask.getEpicId()));
     }
 
-
     @Override
     public void updateSubtask(Subtask subtask) { // обновление Subtask
         if (subtask != null && subtaskMap.containsKey(subtask.getId()) && epicMap.containsKey(subtask.getEpicId())) {
@@ -341,6 +362,10 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public boolean checkTime(Task task) {
+        if (task == null || task.getStartTime() == null || task.getEndTime() == null) {
+            throw new IllegalArgumentException("Задача или ее время начала/конца не могут быть null");
+        }
+
         List<Task> tasks = List.copyOf(prioritizedTasks);
 
         // Если нет задач для проверки, возвращаем true
@@ -349,20 +374,19 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         for (Task taskSave : tasks) {
-            // Проверяем, что время начала и конца обеих задач задано
+            // Проверяем, что время начала и конца задачи сохраненной задачи задано
             if (taskSave.getStartTime() != null && taskSave.getEndTime() != null) {
-                if (task.getStartTime() != null && task.getEndTime() != null) {
-                    // Проверяем, пересекаются ли временные интервалы
-                    if (task.getStartTime().isBefore(taskSave.getEndTime()) && task.getEndTime().isAfter(taskSave.getStartTime())) {
-                        // Если задачи пересекаются, возвращаем false
-                        return false;
-                    }
+                // Проверяем, пересекаются ли временные интервалы
+                if (task.getStartTime().isBefore(taskSave.getEndTime()) && task.getEndTime().isAfter(taskSave.getStartTime())) {
+                    // Если задачи пересекаются, возвращаем false
+                    return false;
                 }
             }
         }
         // Если не было пересечений, возвращаем true
         return true;
     }
+
 
     private void validateTaskPriority() {
         List<Task> tasks = getPrioritizedTasks();
