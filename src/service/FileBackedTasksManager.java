@@ -17,13 +17,10 @@ import java.util.List;
 public class FileBackedTasksManager extends InMemoryTaskManager { // прописывается логика автосохранения в файл
 
     protected static String pathToList;
-
     public FileBackedTasksManager(String pathToList) {
         FileBackedTasksManager.pathToList = pathToList;
     }
-
     static HashMap<Integer, Task> allTask = new HashMap<>();
-
 
     /**/
     public static String historyToString(HistoryManager manager) { // преобразование истории просмотров в строку c id задач
@@ -64,62 +61,71 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // пропи�
         } catch (IOException e) {
             throw new ManagerSaveException(e);
         }
-
     }
-
 
     /**/
     public Task fromString(String value) { // метод создания задачи из строки / разносятся по мапам
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException("Значение не может быть null или пустым");
+        }
+
         Task task = null;
+        String[] taskElement = value.split(",");
+
+        if (taskElement.length < 7) {
+            throw new IllegalArgumentException("Недостаточно элементов в строке: " + value);
+        }
+
         try {
-            if (value != null && !value.trim().isEmpty()) {
-                String[] taskElement = value.split(",");
+            int id = Integer.parseInt(taskElement[0].trim());
+            TasksType type = TasksType.valueOf(taskElement[1].trim());
+            String title = taskElement[2].trim();
+            String description = taskElement[3].trim();
+            StatusTasks statusTasks = StatusTasks.valueOf(taskElement[4].trim());
+            Instant startTime = Instant.ofEpochSecond(Long.parseLong(taskElement[5].trim()));
+            long duration = Long.parseLong(taskElement[6].trim());
+            Integer epicId = null;
 
-                int id = Integer.parseInt(taskElement[0]);
-                TasksType type = TasksType.valueOf(taskElement[1].trim());
-                String title = taskElement[2].trim();
-                String description = taskElement[3].trim();
-                StatusTasks statusTasks = StatusTasks.valueOf(taskElement[4].trim());
-                Instant startTime = Instant.ofEpochSecond(Long.parseLong(taskElement[5].trim()));
-                long duration = Long.parseLong(taskElement[6].trim());
-                Integer epicId = null;
-                if (taskElement.length == 8) {
-                    epicId = Integer.parseInt(taskElement[7].trim());
-                }
-
-                switch (type) {
-
-                    case EPIC:
-                        task = new Epic(id, type, title, description, statusTasks, startTime, duration);
-                        task.setId(id);
-                        epicMap.put(id, (Epic) task);
-                        allTask.put(id, task);
-                        break;
-
-                    case SUBTASK:
-                        task = new Subtask(id, type, title, description, statusTasks, startTime, duration, epicId);
-                        task.setId(id);
-                        subtaskMap.put(id, (Subtask) task);
-                        allTask.put(id, task);
-                        break;
-
-                    case TASK:
-                        task = new Task(id, type, title, description, statusTasks, startTime, duration);
-                        task.setId(id);
-                        taskMap.put(id, task);
-                        allTask.put(id, task);
-                        break;
-                    default:
-                        throw new IllegalArgumentException();
-
-                }
+            if (taskElement.length == 8) {
+                epicId = Integer.parseInt(taskElement[7].trim());
             }
+
+            switch (type) {
+                case EPIC:
+                    task = new Epic(id, type, title, description, statusTasks, startTime, duration);
+                    epicMap.put(id, (Epic) task);
+                    break;
+
+                case SUBTASK:
+                    if (epicId == null) {
+                        throw new IllegalArgumentException("Для подзадачи требуется epicId");
+                    }
+                    task = new Subtask(id, type, title, description, statusTasks, startTime, duration, epicId);
+                    subtaskMap.put(id, (Subtask) task);
+                    break;
+
+                case TASK:
+                    task = new Task(id, type, title, description, statusTasks, startTime, duration);
+                    taskMap.put(id, task);
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Неизвестный тип задачи: " + type);
+            }
+
+            allTask.put(id, task); // Добавляем задачу в общий список
+
         } catch (NumberFormatException e) {
-            System.out.println("Некорректный ввод: " + e);
+            System.out.println("Некорректный ввод: " + e.getMessage());
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка при создании задачи: " + e.getMessage());
             e.printStackTrace();
         }
+
         return task;
     }
+
 
     /**/
     public static List<Integer> historyFromString(String value) {
@@ -141,7 +147,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // пропи�
         }
         return list;
     }
-
 
     public static FileBackedTasksManager loadFromFile(File file) throws IOException { // восстанавливает данные менеджера из файла при запуске программы
         FileBackedTasksManager manager = new FileBackedTasksManager(file.getPath());
@@ -170,7 +175,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // пропи�
         return manager;
     }
 
-
     //     РАБОТА С ЗАДАЧАМИ
     @Override
     public Task getTaskOdId(int id) { // получение задачи по id
@@ -184,7 +188,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // пропи�
         super.clearMapOfTask();
         save();
     }
-
 
     @Override
     public void putTask(Task task) { // создание задачи
@@ -203,8 +206,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // пропи�
         super.removeTask(id);
         save();
     }
-
-
     //    РАБОТА С EPIC
 
     @Override
@@ -243,7 +244,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager { // пропи�
         super.getStatusEpic(id);
         save();
     }
-
 
     // работа с Subtask
 
