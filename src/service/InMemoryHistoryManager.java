@@ -14,6 +14,9 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) { //добавление просмотренной задачи в список истории просмотров
+        if (task == null) {
+            throw new IllegalArgumentException("Задача не может быть null");
+        }
         Node<Task> node = new Node<>(null, task, null);
         if (containerLink.containsKey(task.getId())) {
             list.removeNode(containerLink.get(task.getId()));
