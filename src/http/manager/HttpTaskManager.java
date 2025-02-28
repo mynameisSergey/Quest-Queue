@@ -16,7 +16,6 @@ public class HttpTaskManager extends FileBackedTasksManager {
     private static final String EPIC_KEY = "epic";
     private static final String SUBTASK_KEY = "subtask";
     private static final String HISTORY_KEY = "history";
-
     protected static final Gson gson = new GsonBuilder().registerTypeAdapter(Instant.class, new InstantAdapter()).create();
 
     KVTaskClient client;
