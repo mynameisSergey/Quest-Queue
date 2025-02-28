@@ -59,7 +59,6 @@ public class KVTaskClient {
         }
     }
 
-
     public String load(String key) {
 
         HttpClient client = HttpClient.newHttpClient();
