@@ -13,8 +13,11 @@ public class Task { // родительский класс
     protected StatusTasks statusTasks;
     protected TasksType type;
 
-
     public Task(TasksType type, String title, String description, Instant startTime, long duration) {
+        if (title == null || title.isEmpty())
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        if (duration < 0)
+            throw new IllegalArgumentException("Duration cannot be negative");
         this.type = type;
         this.title = title;
         this.description = description;
@@ -48,7 +51,6 @@ public class Task { // родительский класс
         return startTime.plusSeconds(duration * SECONDS_IN_MINUTE);
     }
 
-
     public TasksType getType() {
         return type;
     }
@@ -56,7 +58,6 @@ public class Task { // родительский класс
     public StatusTasks getStatusTasks() {
         return statusTasks;
     }
-
 
     public int getId() {
         return id;
@@ -89,18 +90,17 @@ public class Task { // родительский класс
         this.startTime = startTime;
     }
 
-
-
     @Override
     public String toString() {
-        return String.format("%d,%s,%s,%s,%s,%d,%d",
-                id,
-                type != null ? type.toString() : "null",
-                title != null ? title : "null",
-                description != null ? description : "null",
-                statusTasks != null ? statusTasks.toString() : "null",
-                startTime != null ? startTime.toEpochMilli() : 0, // или другое значение по умолчанию
-                duration);
+        StringBuilder sb = new StringBuilder();
+        sb.append(id).append(",")
+                .append(type != null ? type.toString() : "null").append(",")
+                .append(title != null ? title : "null").append(",")
+                .append(description != null ? description : "null").append(",")
+                .append(statusTasks != null ? statusTasks.toString() : "null").append(",")
+                .append(startTime != null ? startTime.toEpochMilli() : 0).append(",")
+                .append(duration);
+        return sb.toString();
     }
 
     @Override
@@ -113,10 +113,14 @@ public class Task { // родительский класс
 
     @Override
     public int hashCode() {
-        return Long.hashCode(id); // Генерация hash-кода на основе id
+        return Objects.hash(id, title, description, statusTasks);
     }
 
+
     public void setTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            throw new IllegalArgumentException("Title cannot be null or empty");
+        }
         this.title = title;
     }
 
