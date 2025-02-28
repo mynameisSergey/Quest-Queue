@@ -16,7 +16,6 @@ class EpicTest {
     public static Subtask subtask1;
     public static Subtask subtask2;
 
-
     @BeforeEach
     public void createNewEpicAndNewSubtasks() {
         inMemoryTaskManager = Managers.getDefaultInMemory();
@@ -30,7 +29,6 @@ class EpicTest {
         inMemoryTaskManager.putSubtask(subtask1);
         inMemoryTaskManager.putSubtask(subtask2);
     }
-
 
     @DisplayName("GIVEN a new Epic " +
             "WHEN a new Epic is created " +
@@ -71,7 +69,6 @@ class EpicTest {
         assertEquals(StatusTasks.DONE, status);
     }
 
-
     @DisplayName("GIVEN a new Epic " +
             "WHEN a new Epic is created " +
             "THEN order creation method returns " +
@@ -83,7 +80,6 @@ class EpicTest {
         StatusTasks status = inMemoryTaskManager.getEpicOfId(epic1.getId()).getStatusTasks();
         assertEquals(StatusTasks.IN_PROGRESS, status);
     }
-
 
     @DisplayName("GIVEN a new Epic " +
             "WHEN a new Epic is created " +

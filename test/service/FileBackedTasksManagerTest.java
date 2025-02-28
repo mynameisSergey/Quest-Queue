@@ -30,7 +30,6 @@ class FileBackedTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         file = new File(String.valueOf(pathToList));
     }
 
-
     @AfterEach
     public void afterEach() {
         try {
@@ -76,7 +75,6 @@ class FileBackedTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         fileBackedTasksManager.save();
         fileBackedTasksManager.loadFromFile(new File("history.csv"));
         assertEquals(Collections.EMPTY_LIST, fileBackedTasksManager.getHistory());
-
     }
 
     @DisplayName("GIVEN a new Task, Epic, Subtask " +
@@ -89,7 +87,6 @@ class FileBackedTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         Task task = new Task(1, TasksType.TASK, "Тест", "Тестовый Task для всех", NEW, Instant.now(), 0);
         Epic epic = new Epic(2, TasksType.EPIC, "Тест", "Тестовый Эпик для всех", NEW, Instant.now(), 0);
         Subtask subtask = new Subtask(3, TasksType.SUBTASK, "dsfsdf", "dsadas", NEW, Instant.now(), 0, 2);
-
 
         fileBackedTasksManager.putTask(task);
         fileBackedTasksManager.putEpic(epic);
@@ -104,6 +101,5 @@ class FileBackedTasksManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         assertEquals(List.of(subtask), list3);
 
     }
-
 
 }

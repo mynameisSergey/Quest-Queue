@@ -22,7 +22,6 @@ class InMemoryHistoryManagerTest {
     Subtask subtask2;
     Epic epic1;
 
-
     @BeforeEach
     public void createTasksEpicAndSubtasks() {
         task1 = new Task(1, TasksType.TASK, "Тест", "Тестовая задача для всех", StatusTasks.NEW, Instant.now(), 3);
@@ -60,7 +59,6 @@ class InMemoryHistoryManagerTest {
         List<Task> list = inMemoryHistoryManager.getHistory();
         assertTrue(list.isEmpty());
     }
-
 
     @DisplayName("GIVEN a 2 identical Tasks, 2 identical Epics, " +
             "2 identical Subtasks " +

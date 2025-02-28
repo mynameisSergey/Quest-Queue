@@ -22,13 +22,12 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     Subtask subtask2;
     Epic epic1;
 
-
-   @BeforeEach
+    @BeforeEach
     public void createTasksEpicAndSubtasks() {
-        task1 = new Task(1,TasksType.TASK, "Тестовая задача для всех", "описаниеТеста", NEW, Instant.now(), 0);
-        epic1 = new Epic(2,TasksType.EPIC, "Тестовый Эпик для всех", "описаниеТеста", NEW, Instant.now(), 0);
+        task1 = new Task(1, TasksType.TASK, "Тестовая задача для всех", "описаниеТеста", NEW, Instant.now(), 0);
+        epic1 = new Epic(2, TasksType.EPIC, "Тестовый Эпик для всех", "описаниеТеста", NEW, Instant.now(), 0);
         subtask1 = new Subtask(3, TasksType.SUBTASK, "Подзадача 1", "Описание 1", StatusTasks.NEW, Instant.now(), 0, 2);
-        subtask2 = new Subtask(4, TasksType.SUBTASK, "Подзадача 2", "Описание 2", StatusTasks.NEW, Instant.now(),0, 2);
+        subtask2 = new Subtask(4, TasksType.SUBTASK, "Подзадача 2", "Описание 2", StatusTasks.NEW, Instant.now(), 0, 2);
 
     }
 
@@ -44,7 +43,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(1, task1.getId());
         assertEquals(task1, manager.getTaskOdId(task1.getId()));
     }
-
 
     @DisplayName("GIVEN a new  Epic " +
             "WHEN a new Epic is created " +
@@ -113,7 +111,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         assertTrue(manager.getArraySubtask().isEmpty());
     }
 
-
     @DisplayName("GIVEN a new Task " +
             "WHEN a new Task is created " +
             "THEN ArrayList<Task> equals to tasklist call")
@@ -123,7 +120,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         List<Task> list = new ArrayList<>();
         list.add(task1);
         assertEquals(list, manager.getArrayTask());
-
     }
 
     @DisplayName("GIVEN a new Epic " +
@@ -135,7 +131,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         List<Epic> list = new ArrayList<>();
         list.add(epic1);
         assertEquals(list, manager.getArrayEpic());
-
     }
 
     @DisplayName("GIVEN a new Subtask " +
@@ -273,6 +268,5 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         IllegalArgumentException a = assertThrows(IllegalArgumentException.class, () -> manager.putSubtask(null));
         assertEquals("Задача не может быть NULL", a.getMessage());
     }
-
 
 }
